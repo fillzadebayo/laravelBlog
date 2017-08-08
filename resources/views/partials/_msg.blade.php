@@ -1,5 +1,5 @@
 @if (Session::has('success'))
-<div class="alert alert-success" role="alert">
+<div class="alert alert-dismissible alert-success fade show" role="alert">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Success:</strong>{{ Session::get('success') }}
 </div>
@@ -17,3 +17,8 @@
   <ul>
 </div>
 @endif
+<script>
+$(".alert-dismissible").fadeTo(2000, 500).slideUp(500, function(){
+    $(".alert-dismissible").alert('close');
+});
+</script>

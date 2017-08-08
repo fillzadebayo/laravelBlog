@@ -13,6 +13,8 @@
 
           @else
               <li class="{{ Request::is('post') ? "active" : "" }}"><a href="{{ URL::to('/post') }}">View Post</a></li>
+              <li class="{{ Request::is('categories.index') ? "active" : "" }}"><a href="{{ route('categories.index') }}">Categories</a></li>
+
           @endif
 
     </ul>
