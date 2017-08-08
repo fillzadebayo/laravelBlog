@@ -14,7 +14,7 @@
         <div class="post">
           <h3> {{ $post->title }}</h3>
           <p >{{ substr($post->body,0,300) }}{{ strlen($post->body)>50 ? "..." :""}} </p>
-          <p > <a href="" class="btn btn-sm btn-primary"  role="button">Read more &raquo;</a></p>
+          <p > <a href="{{ url('blog/'.$post->slug) }}" class="btn btn-sm btn-primary"  role="button">Read more &raquo;</a></p>
           <hr>
         </div>
       @endforeach

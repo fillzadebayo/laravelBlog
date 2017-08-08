@@ -13,10 +13,21 @@
 
 
 Route::group(['middleware' =>['web']], function (){
+  /* Route::get('auth/login','Auth\AuthController@getLogin');
+  Route::post('auth/login', 'Auth\AuthController@postLogin');
+  Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
-  Route::get('/contact', 'PagesController@getContact');
-  Route::get('/about', 'PagesController@getAbout');
-  Route::get('/index', 'PagesController@getIndex');
+  Route::get('auth/register','Auth\AuthController@getRegister');
+  Route::post('auth/register','Auth\AuthController@postRegister'); */
+  Auth::routes();
+  Route::get('/home', 'HomeController@index')->name('home');
+  Route::get('blog/{slug}', ['as'=>'blog.single', 'uses'=>'BlogController@getSingle'])
+  ->where('slug','[\w\d\-\_]+');
+  Route::get('blog',['uses'=>'BlogController@getIndex', 'as' => 'blog.index']);
+  Route::get('contact', 'PagesController@getContact');
+  Route::get('about', 'PagesController@getAbout');
   Route::get('/', 'PagesController@getIndex');
   Route::resource('post', 'PostController');
+  Route::resource('categories', 'CategoryController', ['except' => ['create']]);
+
 });

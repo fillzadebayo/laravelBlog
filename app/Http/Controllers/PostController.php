@@ -21,6 +21,10 @@ class PostController extends Controller
       $posts = Post::orderBy('id','desc')->paginate(3);
       return view('post.index')->with('posts',$posts);
     }
+      public function __construct()
+      {
+          $this->middleware('auth');
+      }
 
     /**
      * Show the form for creating a new resource.
@@ -42,22 +46,21 @@ class PostController extends Controller
     {
         $this->validate($request, array(
           'title'=>'required|max:255',
-          'body'=>'required'
+          'body'=>'required',
+          'slug'=>'required|min:5|max:255|unique:posts,slug'
 
         ));
         $post = new Post;
         $post->title=$request->title;
         $post->body = $request->body;
+        $post->slug = $request->slug;
         $post->save();
         Session::flash('success', 'The Post was succesfully saved!');
 
         return redirect()->route('post.show',$post->id);
 
     }
-
-    /**
-     * Display the specified resource.
-     *
+     /*
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -66,8 +69,7 @@ class PostController extends Controller
       $post = Post::find($id);
         return view('post.show')->with('post', $post);
     }
-
-    /**
+/**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -88,14 +90,25 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $post = Post::find($id);
+        if ($request->input('slug')==$post->slug) {
         $this->validate($request, array(
           'title'=>'required|max:255',
           'body'=>'required'
+        ));
+      }else{
+        $this->validate($request, array(
+          'title'=>'required|max:255',
+          'body'=>'required',
+          'slug'=>'required|unique:posts,slug'
 
         ));
+      }
+
         $post = Post::find($id);
         $post->title=$request->input('title');
         $post->body = $request->input('body');
+        $post->slug = $request->input('slug');
         $post->save();
         Session::flash('success', 'The Post was succesfully Edited!');
 

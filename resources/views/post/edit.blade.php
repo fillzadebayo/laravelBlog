@@ -14,6 +14,12 @@
              <input type="text" name="title" class="form-control" value="{{ $post->title }}" required id="title"  placeholder="Enter Title">
            </div>
          </div>
+         <div class="form-group">
+           <label class="control-label col-sm-2" for="slug"> Slug:</label>
+           <div class="col-sm-10">
+             <input type="text" name="slug" class="form-control" value="{{ $post->slug }}" required id="slug"  placeholder="Enter slug">
+           </div>
+         </div>
 
          <div class="form-group " >
            <label class="control-label col-sm-2" for="body">Message</label>
