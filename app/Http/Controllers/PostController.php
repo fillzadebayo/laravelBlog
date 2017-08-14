@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Category;
 use Session;
 
 
@@ -33,7 +34,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post.create');
+        $categories = Category::all();
+        return view('post.create')->withCategories($categories);
     }
 
     /**
@@ -47,6 +49,7 @@ class PostController extends Controller
         $this->validate($request, array(
           'title'=>'required|max:255',
           'body'=>'required',
+          'category'=>'required',
           'slug'=>'required|min:5|max:255|unique:posts,slug'
 
         ));
@@ -54,6 +57,7 @@ class PostController extends Controller
         $post->title=$request->title;
         $post->body = $request->body;
         $post->slug = $request->slug;
+        $post->category_id = $request->category;
         $post->save();
         Session::flash('success', 'The Post was succesfully saved!');
 
@@ -78,7 +82,13 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::find($id);
-        return view('post.edit')->with('post',$post);
+        $categories = Category::all();
+        $cats= array();
+        foreach ($categories as $category) {
+          $cats[$category->id]=$category->name;
+
+        }
+        return view('post.edit')->with('post',$post)->withCategories($cats);
     }
 
     /**
@@ -94,13 +104,15 @@ class PostController extends Controller
         if ($request->input('slug')==$post->slug) {
         $this->validate($request, array(
           'title'=>'required|max:255',
-          'body'=>'required'
+          'body'=>'required',
+          'category'=>'required'
         ));
       }else{
         $this->validate($request, array(
           'title'=>'required|max:255',
           'body'=>'required',
-          'slug'=>'required|unique:posts,slug'
+          'slug'=>'required|unique:posts,slug',
+          'category'=>'required'
 
         ));
       }
@@ -109,6 +121,7 @@ class PostController extends Controller
         $post->title=$request->input('title');
         $post->body = $request->input('body');
         $post->slug = $request->input('slug');
+        $post->category_id = $request->input('category');
         $post->save();
         Session::flash('success', 'The Post was succesfully Edited!');
 

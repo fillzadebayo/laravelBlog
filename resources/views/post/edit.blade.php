@@ -17,10 +17,18 @@
          <div class="form-group">
            <label class="control-label col-sm-2" for="slug"> Slug:</label>
            <div class="col-sm-10">
-             <input type="text" name="slug" class="form-control" value="{{ $post->slug }}" required id="slug"  placeholder="Enter slug">
+             <input type="text" name="slug" class="form-control" value='{{ $post->slug }}' required id="slug"  placeholder="Enter slug">
            </div>
          </div>
 
+         <div class="form-group">
+          <label class="control-label col-sm-2" for="category"> Category</label>
+          <div class="col-sm-10">
+            <div class="form-group">
+              {{ Form::select('category', $categories, null, ['class'=>'form-control']) }}
+             </div>
+          </div>
+        </div>
          <div class="form-group " >
            <label class="control-label col-sm-2" for="body">Message</label>
            <div class="col-sm-10">
